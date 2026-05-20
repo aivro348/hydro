@@ -1,0 +1,26 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Cyan-Blue Gradient matching card (#00AEEF) -->
+    <linearGradient id="fav-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5FF" />
+      <stop offset="100%" stop-color="#00AEEF" />
+    </linearGradient>
+    <!-- Violet-Purple Gradient matching card (#2E1A6B) -->
+    <linearGradient id="fav-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7F00FF" />
+      <stop offset="100%" stop-color="#2E1A6B" />
+    </linearGradient>
+  </defs>
+
+  <!-- Upper Interlocking Loop (Cyan-Blue component) -->
+  <path
+    d="M 12 24 H 80 C 93 24 104 34 104 48 C 104 62 93 72 80 72 H 58 L 48 58 H 80 C 85 58 89 54 89 48 C 89 42 85 38 80 38 H 28 L 12 24 Z"
+    fill="url(#fav-cyan)"
+  />
+
+  <!-- Lower Interlocking Leg (Deep Violet-Purple component) -->
+  <path
+    d="M 12 96 H 42 L 52 82 H 28 C 22 82 18 78 18 72 L 18 52 H 32 L 32 68 C 32 71 34 74 37 74 H 56 L 76 96 H 98 L 76 68 C 84 64 90 56 90 46 C 90 41 87 36 82 32 L 88 24 C 96 30 100 38 100 48 C 100 64 88 78 72 82 L 92 108 H 66 L 52 88 H 24 L 12 96 Z"
+    fill="url(#fav-purple)"
+  />
+</svg>
