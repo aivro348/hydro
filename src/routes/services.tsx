@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, X } from "lucide-react";
+import { useState } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { CATALOG } from "@/lib/catalog";
 import { SITE, waLink } from "@/lib/site";
@@ -37,11 +38,25 @@ export const Route = createFileRoute("/services")({
 
 function Services() {
   usePageReveal();
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
   return (
     <>
       <section className="pt-32 pb-24 md:pt-36 md:pb-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
+          {/* Page Header */}
+          <div className="text-center mb-14">
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              Our Services
+            </div>
+            <h1 className="mt-3 font-display text-3xl font-bold md:text-5xl lg:text-6xl">
+              Sales & Service <span className="text-gradient-brand">Solutions</span>
+            </h1>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-2xl mx-auto md:text-base">
+              Comprehensive hydraulic solutions — from pump repair and cylinder reconditioning to custom power pack engineering.
+            </p>
+          </div>
+
           <div className="grid gap-6 md:grid-cols-2">
             {CATALOG.map((c, idx) => (
               <article
@@ -56,7 +71,8 @@ function Services() {
                     width={800}
                     height={600}
                     loading="lazy"
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+                    onClick={() => setZoomedImage(c.image)}
+                    className="h-full w-full object-cover cursor-pointer transition duration-700 group-hover:scale-110"
                   />
                 </div>
                 <div className="p-7 sm:col-span-3">
@@ -127,6 +143,27 @@ function Services() {
           </div>
         </div>
       </section>
+
+      {/* Lightbox / Zoom Overlay */}
+      {zoomedImage && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm transition-opacity"
+          onClick={() => setZoomedImage(null)}
+        >
+          <button 
+            className="absolute top-6 right-6 rounded-full bg-white/10 p-2 text-white/70 backdrop-blur-md transition-all hover:bg-white/20 hover:text-white"
+            onClick={() => setZoomedImage(null)}
+          >
+            <X className="h-6 w-6" />
+          </button>
+          <img 
+            src={zoomedImage} 
+            className="max-h-[90vh] max-w-[90vw] rounded-xl object-contain shadow-2xl animate-in fade-in zoom-in duration-300" 
+            alt="Zoomed product" 
+            onClick={(e) => e.stopPropagation()} 
+          />
+        </div>
+      )}
     </>
   );
 }

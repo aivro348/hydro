@@ -48,14 +48,14 @@ function Gallery() {
     <>
       <section className="pt-32 pb-24 md:pt-36 md:pb-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <div className="text-center mb-12">
+          <div className="text-center mb-14">
             <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               Gallery
             </div>
-            <h1 className="mt-3 font-display text-4xl font-bold md:text-6xl">
+            <h1 className="mt-3 font-display text-3xl font-bold md:text-5xl lg:text-6xl">
               Inside Our <span className="text-gradient-brand">Workshop</span>
             </h1>
-            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-2xl mx-auto md:text-base">
               A look at the products we supply and the service work we deliver.
             </p>
           </div>

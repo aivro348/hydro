@@ -40,14 +40,14 @@ function Products() {
     <>
       <section className="pt-32 pb-24 md:pt-36 md:pb-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <div className="text-center mb-12">
+          <div className="text-center mb-14">
             <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               Products
             </div>
-            <h1 className="mt-3 font-display text-4xl font-bold md:text-6xl">
+            <h1 className="mt-3 font-display text-3xl font-bold md:text-5xl lg:text-6xl">
               Hydraulic <span className="text-gradient-brand">Products Catalog</span>
             </h1>
-            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-2xl mx-auto md:text-base">
               Industrial-grade hydraulic components and assemblies for every application.
             </p>
           </div>
@@ -56,6 +56,7 @@ function Products() {
             {CATALOG.map((c, idx) => (
               <article
                 key={c.slug}
+                id={c.slug}
                 className="reveal-card tilt-3d group overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all hover:border-primary/30 hover:shadow-glow-gold"
                 data-delay={idx * 80}
               >
@@ -68,8 +69,8 @@ function Products() {
                     loading="lazy"
                     className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-card via-card/50 to-transparent p-5">
-                    <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5">
+                    <div className="text-xs font-bold uppercase tracking-wider text-white drop-shadow-md">
                       {c.short}
                     </div>
                   </div>

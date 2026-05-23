@@ -115,9 +115,14 @@ export function Footer() {
           </div>
           <div>
             Developed by{" "}
-            <span className="font-medium text-foreground/80">
+            <a
+              href="https://www.reddycharan.me"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-foreground/80 hover:text-primary transition-colors hover:underline"
+            >
               {SITE.developer}
-            </span>
+            </a>
           </div>
         </div>
       </div>

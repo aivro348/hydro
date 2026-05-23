@@ -45,7 +45,7 @@
   --card-foreground: oklch(0.15 0.01 250);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0.01 250);
-  --primary: oklch(0.55 0.21 230);            /* Premium Cyan Blue for Light Theme */
+  --primary: oklch(0.38 0.18 230);            /* Premium Deep Blue for perfect text contrast */
   --primary-foreground: oklch(0.98 0.01 250);
   --secondary: oklch(0.96 0.01 250);
   --secondary-foreground: oklch(0.20 0.01 250);
@@ -246,5 +246,53 @@
   }
   .animate-fade-in {
     animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* ── Fullscreen Hero Slideshow ── */
+  @keyframes kenburns {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.12); }
+  }
+  .slide-kenburns {
+    animation: kenburns 7s ease-out forwards;
+  }
+
+  @keyframes progress-fill {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  .slide-progress-bar {
+    transform-origin: left;
+    animation: progress-fill 5s linear forwards;
+  }
+
+  @keyframes slide-text-in {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide-text-enter {
+    animation: slide-text-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .slide-text-enter-delay {
+    animation: slide-text-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+    opacity: 0;
+  }
+  .slide-text-enter-delay-2 {
+    animation: slide-text-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    opacity: 0;
+  }
+
+  /* Counter badge pulse */
+  @keyframes counter-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 35s linear infinite;
   }
 }

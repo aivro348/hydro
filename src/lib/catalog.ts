@@ -6,6 +6,9 @@ import seals from "@/assets/prod-seals.jpg";
 import powerpack from "@/assets/prod-powerpack.jpg";
 import cylinder from "@/assets/prod-cylinder.jpg";
 import accessories from "@/assets/prod-accessories.jpg";
+import handpump from "@/assets/slide-handpump.png";
+import heavyCylinders from "@/assets/prod-heavy-cylinders.png";
+import brassActuators from "@/assets/prod-brass-actuators.png";
 
 export type CatalogItem = {
   slug: string;
@@ -24,4 +27,7 @@ export const CATALOG: CatalogItem[] = [
   { slug: "accessories", title: "Hydraulic Accessories", short: "Filters, gauges & manifolds", description: "Complete range of hydraulic accessories to keep your system running clean and reliable.", image: accessories },
   { slug: "power-pack", title: "Power Pack Sales & Service", short: "Custom hydraulic power packs", description: "Design, supply and servicing of custom hydraulic power packs for any tonnage and duty cycle.", image: powerpack },
   { slug: "cylinder", title: "Cylinder Sales & Service", short: "Single & double acting cylinders", description: "Manufacturing, repair and reconditioning of hydraulic cylinders of every bore and stroke.", image: cylinder },
+  { slug: "hand-pump", title: "Hand Pump", short: "Manual hydraulic pumps", description: "High-pressure manual hydraulic pumps for precision lifting, testing, and pressing.", image: handpump },
+  { slug: "heavy-duty-cylinders", title: "Heavy-Duty Clevis Cylinders", short: "High-tonnage clevis cylinders", description: "Machine-green, heavy-duty industrial hydraulic cylinders with robust clevis mounts for maximum load stability.", image: heavyCylinders },
+  { slug: "brass-actuators", title: "Precision Brass Actuators", short: "Polished brass hydraulic cylinders", description: "High-quality, polished brass hydraulic cylinders and actuators featuring precision steel piston rods.", image: brassActuators },
 ];

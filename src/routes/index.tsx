@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect, useCallback } from "react";
 import {
   ArrowRight,
   Phone,
@@ -18,13 +18,76 @@ import {
   Layers,
   Settings,
   Cpu,
+  Play,
+  Pause,
+  ChevronLeft,
 } from "lucide-react";
-import heroPremium from "@/assets/hero-premium.png";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import galleryService from "@/assets/gallery-service.jpg";
 import { CATALOG } from "@/lib/catalog";
 import { SITE, waLink } from "@/lib/site";
 import { ParticleField } from "@/components/site/ParticleField";
 import { usePageReveal } from "@/hooks/useScrollReveal";
+
+import slidePowerpack from "@/assets/slide-powerpack.png";
+import slideCylinder from "@/assets/slide-cylinder.png";
+import slidePump from "@/assets/slide-pump.png";
+import slideHosepipes from "@/assets/slide-hosepipes.png";
+import slideValves from "@/assets/slide-valves.png";
+import slideSealkits from "@/assets/slide-sealkits.png";
+import slideHandpump from "@/assets/slide-handpump.png";
+
+const HERO_SLIDES = [
+  {
+    image: slidePowerpack,
+    title: "Power pack",
+    tag: "Design & Assembly",
+    message: "AC/DC hydraulic power units engineered for heavy industrial force systems.",
+    slug: "power-pack"
+  },
+  {
+    image: slideSealkits,
+    title: "Hydraulic Seal kit",
+    tag: "High-Temperature Kits",
+    message: "Polyurethane U-cups, O-rings and wipers to prevent fluid bypass.",
+    slug: "seal-kits"
+  },
+  {
+    image: slideHosepipes,
+    title: "Hose",
+    tag: "High-Pressure Assemblies",
+    message: "Multi-spiral steel wire reinforced hoses crimped to exact specifications.",
+    slug: "hose-pipes"
+  },
+  {
+    image: slideCylinder,
+    title: "Cylinder",
+    tag: "Sales & Reconditioning",
+    message: "Single & double acting cylinders with precision chrome bore plating.",
+    slug: "cylinder"
+  },
+  {
+    image: slidePump,
+    title: "Hydraulic all pumps",
+    tag: "Gear, Piston & Vane",
+    message: "Robust flow-rate pump systems calibrated for factory-grade machinery.",
+    slug: "hydraulic-pumps"
+  },
+  {
+    image: slideValves,
+    title: "Hydraulic DC WALL",
+    tag: "Solenoid & Manual",
+    message: "Precision multi-spool hydraulic directional blocks from global brands.",
+    slug: "valves"
+  },
+  {
+    image: slideHandpump,
+    title: "Hand pump",
+    tag: "Manual Power",
+    message: "High-pressure manual hydraulic pumps for precision lifting and pressing.",
+    slug: "hand-pump"
+  }
+];
 
 const TITLE =
   "RVS Hydraulics | Premium Hydraulic Pump & Cylinder Service in Shoolagiri";
@@ -59,7 +122,29 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   usePageReveal();
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [advisorCategory, setAdvisorCategory] = useState<"pump" | "cylinder" | "hose" | "powerpack">("pump");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isSliderPlaying, setIsSliderPlaying] = useState(true);
+  const navigate = useNavigate();
+
+  const goToSlide = useCallback((idx: number) => {
+    setCurrentSlide(idx);
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  }, []);
+
+  useEffect(() => {
+    if (!isSliderPlaying) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [isSliderPlaying]);
 
   const faqs = [
     {
@@ -135,236 +220,144 @@ function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ─── HERO SECTION ─── */}
-      <section className="relative min-h-[92vh] overflow-hidden bg-gradient-hero text-foreground flex items-center">
-        {/* Subtle grid background */}
-        <div className="absolute inset-0 grid-pattern opacity-10" />
-
-        {/* Ambient glow orbs */}
-        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-primary/10 blur-[130px] animate-pulse-glow" />
-        <div className="absolute right-1/4 bottom-1/4 h-80 w-80 rounded-full bg-accent/8 blur-[110px]" />
-
-        <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-20 md:px-6 md:py-24 lg:grid-cols-12 lg:py-0">
-          {/* Left Hero Column */}
-          <div className="lg:col-span-7 flex flex-col justify-center text-left">
-            <div className="reveal-section mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary shadow-sm">
-              <Zap className="h-3.5 w-3.5 text-primary" /> Premier Hydraulic Engineering
-            </div>
-
-            <h1 className="reveal-section font-display text-5xl font-extrabold leading-[1.05] md:text-7xl lg:text-8xl text-foreground" data-delay="100">
-              High-Precision <br />
-              <span className="text-gradient-brand">Hydraulic Solutions</span>
-              <br />
-              <span className="text-foreground/90 text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">Sales & Service Specialist</span>
-            </h1>
-
-            <p className="reveal-section mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg" data-delay="200">
-              Your trusted partner for premium hydraulic pumps, high-pressure hose pipes, cylinders, genuine seal kits, and custom engineered power packs. Serving industrial corridors in Shoolagiri, Hosur, Krishnagiri, and Bangalore.
-            </p>
-
-            {/* CTAs */}
-            <div className="reveal-section mt-9 flex flex-wrap gap-4" data-delay="300">
-              <a
-                href={`tel:${SITE.phoneIntl}`}
-                className="group inline-flex items-center gap-2.5 rounded-xl bg-gradient-brand px-7 py-4 text-sm font-bold text-primary-foreground shadow-industrial transition-all hover:shadow-glow-gold hover:scale-[1.02]"
-              >
-                <Phone className="h-4 w-4 transition-transform group-hover:rotate-12" />
-                Call {SITE.phone}
-              </a>
-              <a
-                href={waLink()}
-                target="_blank"
-                rel="noopener"
-                className="group inline-flex items-center gap-2.5 rounded-xl bg-[#25D366] px-7 py-4 text-sm font-bold text-white shadow-industrial transition-all hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(37,211,102,0.3)]"
-              >
-                <MessageCircle className="h-4.5 w-4.5" /> WhatsApp Quote
-              </a>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/65 px-7 py-4 text-sm font-semibold text-foreground hover:bg-card hover:border-primary/30 transition shadow-sm"
-              >
-                Get a Quote <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            {/* Industrial trust factors */}
-            <div className="reveal-section mt-12 border-t border-border/60 pt-8" data-delay="400">
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/80 mb-4">Quality & Reliability Standards</p>
-              <div className="flex flex-wrap gap-6 text-sm text-foreground/80">
-                <span className="flex items-center gap-1.5"><ShieldCheck className="h-4.5 w-4.5 text-primary" /> Genuine OEM Parts Only</span>
-                <span className="flex items-center gap-1.5"><BadgeCheck className="h-4.5 w-4.5 text-accent" /> Pressure-Tested Rebuilds</span>
-                <span className="flex items-center gap-1.5"><Clock className="h-4.5 w-4.5 text-primary" /> Quick Turnaround Service</span>
-              </div>
-            </div>
+      {/* ─── FULL-SCREEN IMMERSIVE HERO SLIDESHOW ─── */}
+      <section className="relative h-[70vh] min-h-[500px] md:h-screen md:min-h-0 w-full overflow-hidden bg-black">
+        {/* Slide Images — full viewport, cross-fade with Ken Burns */}
+        {HERO_SLIDES.map((slide, idx) => (
+          <div
+            key={idx}
+            className={`absolute inset-0 transition-opacity duration-[1.4s] ease-in-out ${
+              currentSlide === idx ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          >
+            <img
+              src={slide.image}
+              alt={slide.title}
+              className={`h-full w-full object-cover ${
+                currentSlide === idx ? "slide-kenburns" : ""
+              }`}
+              key={`img-${idx}-${currentSlide === idx ? "active" : "idle"}`}
+            />
           </div>
+        ))}
 
-          {/* Right Hero Column (Interactive Visual Feature Card) */}
-          <div className="hidden lg:col-span-5 lg:flex lg:items-center">
-            <div className="reveal-right relative w-full" data-delay="300">
-              <div className="absolute -inset-4 rounded-3xl bg-gradient-brand opacity-10 blur-2xl" />
-              
-              {/* Complex Premium Card Frame */}
-              <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card p-4 shadow-industrial backdrop-blur-md">
-                <div className="relative aspect-square overflow-hidden rounded-xl border border-border/40">
-                  <img
-                    src={heroPremium}
-                    alt="RVS Hydraulics Premium Rebuild Service"
-                    width={800}
-                    height={800}
-                    priority="true"
-                    className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
-                  
-                  {/* Glowing Overlay Status Badge */}
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl bg-black/65 px-4 py-3 text-white backdrop-blur-md">
-                    <div>
-                      <div className="text-[10px] uppercase tracking-wider text-primary font-bold">Workshop Status</div>
-                      <div className="text-xs font-semibold">Diagnostics Active</div>
-                    </div>
-                    <span className="flex h-2.5 w-2.5 relative">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#25D366]"></span>
-                    </span>
-                  </div>
-                </div>
+        {/* Dark cinematic gradient overlay */}
+        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
+        <div className="absolute inset-0 z-20 bg-gradient-to-r from-black/40 to-transparent" />
 
-                {/* Micro Stats inside Card */}
-                <div className="mt-4 grid grid-cols-2 gap-4 border-t border-border/50 pt-4 text-center">
-                  <div className="border-r border-border/50">
-                    <div className="text-2xl font-extrabold text-primary">24 Hours</div>
-                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Emergency Quote response</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-extrabold text-accent">100%</div>
-                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Guaranteed Satisfaction</div>
-                  </div>
-                </div>
-              </div>
+        {/* ─ Central Content Overlay ─ */}
+        <div className="absolute inset-0 z-30 flex flex-col justify-end pb-24 sm:pb-28 md:justify-center md:pb-0">
+          <div className="mx-auto w-full max-w-7xl px-6 sm:px-10 md:px-12">
 
-              {/* Floating Small Performance Card */}
-              <div className="absolute -top-6 -right-6 animate-float hidden xl:block rounded-2xl border border-border bg-card/90 p-4 shadow-industrial backdrop-blur-md max-w-[200px]">
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-primary/10 p-2 text-primary">
-                    <Wrench className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold text-foreground">Advanced Testing</div>
-                    <div className="text-[10px] text-muted-foreground">Flow & pressure dynamic setup</div>
-                  </div>
-                </div>
-              </div>
+            {/* Product name + description — each slide gets unique key to restart animation */}
+            <div key={`text-${currentSlide}`} className="max-w-2xl">
+              {/* Tag pill */}
+              <span className="slide-text-enter mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white/90 backdrop-blur-md">
+                <Zap className="h-3 w-3" />
+                {HERO_SLIDES[currentSlide].tag}
+              </span>
 
+              {/* Product Title */}
+              <h1 className="slide-text-enter-delay font-display text-4xl font-extrabold leading-[1.08] tracking-wide text-white sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
+                {HERO_SLIDES[currentSlide].title}
+              </h1>
+
+              {/* One-line description */}
+              <p className="slide-text-enter-delay-2 mt-5 max-w-lg text-sm leading-relaxed text-white/80 sm:text-base md:text-lg">
+                {HERO_SLIDES[currentSlide].message}
+              </p>
+
+              {/* CTA: View Product */}
+              <button
+                onClick={() => navigate({ to: '/products', hash: HERO_SLIDES[currentSlide].slug })}
+                className="slide-text-enter-delay-2 group mt-8 inline-flex cursor-pointer items-center gap-2.5 rounded-xl bg-gradient-brand px-7 py-3.5 text-sm font-bold text-white shadow-[0_8px_32px_rgba(0,0,0,0.35)] transition-all hover:scale-[1.03] hover:shadow-glow-gold"
+              >
+                View Product
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </button>
             </div>
           </div>
         </div>
+
       </section>
 
-      {/* ─── INTERACTIVE SOLUTIONS ADVISOR (NEW HIGH-END UI FEATURE) ─── */}
+      {/* ─── DIAGNOSTIC DESK (REDESIGNED TO MATCH PAGE FORMAT) ─── */}
       <section className="relative border-t border-border py-24 md:py-28 bg-steel/30">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="reveal-section mx-auto max-w-3xl text-center mb-16">
-            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Interactive Diagnostic Desk</div>
-            <h2 className="mt-3 font-display text-4xl font-bold md:text-5xl text-foreground">
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Diagnostic Desk</div>
+            <h2 className="mt-3 font-display text-3xl font-extrabold md:text-5xl text-foreground">
               Identify & Solve Your <span className="text-gradient-accent">Hydraulic Problems</span>
             </h2>
-            <p className="mt-4 text-muted-foreground">
-              Select your hydraulic issue below to view our engineering diagnostics, professional troubleshooting steps, and standard service guidelines.
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
+              View our engineering diagnostics, professional troubleshooting steps, and standard service guidelines for common issues.
             </p>
           </div>
 
-          {/* Interactive Advisor Frame */}
-          <div className="reveal-section grid gap-8 lg:grid-cols-12" data-delay="100">
-            {/* Left selector buttons */}
-            <div className="lg:col-span-4 flex flex-col gap-3.5 justify-center">
-              {[
-                { id: "pump", label: "Pump Diagnostics", desc: "Pressure drops & whine noises", icon: Cpu },
-                { id: "cylinder", label: "Cylinder Leaks", desc: "Fluid bypass & drift issues", icon: Layers },
-                { id: "hose", label: "Hose Burst & Wear", desc: "High-pressure custom assemblies", icon: Settings },
-                { id: "powerpack", label: "Custom Power Packs", desc: "AC/DC dynamic power units", icon: Compass }
-              ].map((tab) => {
-                const Icon = tab.icon;
-                const isSelected = advisorCategory === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setAdvisorCategory(tab.id as any)}
-                    className={`group text-left p-5 rounded-2xl border transition-all duration-300 ${
-                      isSelected
-                        ? "bg-card border-primary/45 shadow-glow-gold scale-[1.02]"
-                        : "bg-card/45 border-border hover:border-primary/20 hover:bg-card/80"
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={`rounded-xl p-3 transition-colors ${
-                        isSelected ? "bg-gradient-brand text-primary-foreground" : "bg-primary/5 text-primary group-hover:bg-primary/10"
-                      }`}>
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <div className={`font-display text-lg font-bold tracking-wide transition-colors ${
-                          isSelected ? "text-primary" : "text-foreground"
-                        }`}>{tab.label}</div>
-                        <div className="text-xs text-muted-foreground mt-0.5">{tab.desc}</div>
-                      </div>
-                      <ChevronRight className={`ml-auto h-4 w-4 transition-transform ${
-                        isSelected ? "text-primary translate-x-1" : "text-muted-foreground/50"
-                      }`} />
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Right Display Board */}
-            <div className="lg:col-span-8 bg-card border border-border/80 rounded-3xl p-8 shadow-industrial flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between border-b border-border/50 pb-5 mb-6">
-                  <h3 className="font-display text-2xl font-extrabold tracking-wide text-foreground">
-                    {advisoryData[advisorCategory].title}
-                  </h3>
-                  <span className="rounded-full bg-primary/10 px-3.5 py-1 text-xs font-semibold text-primary uppercase">Standard Procedure</span>
-                </div>
-
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Common Symptom</h4>
-                    <p className="text-sm font-semibold text-foreground/90">{advisoryData[advisorCategory].symptom}</p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Engineering Fix</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{advisoryData[advisorCategory].procedure}</p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Service Capabilities</h4>
-                    <ul className="grid gap-2.5 sm:grid-cols-2">
-                      {advisoryData[advisorCategory].features.map((feat, index) => (
-                        <li key={index} className="flex items-center gap-2 text-sm text-foreground/80 font-medium">
-                          <BadgeCheck className="h-4.5 w-4.5 text-[#25D366] shrink-0" />
-                          {feat}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t border-border/50 pt-6 mt-8 flex flex-wrap items-center justify-between gap-4">
-                <span className="text-xs text-muted-foreground">Estimated diagnostic time: <strong className="text-foreground">Within 1-2 hours</strong></span>
-                <a
-                  href={waLink(advisoryData[advisorCategory].waMessage)}
-                  target="_blank"
-                  rel="noopener"
-                  className="group inline-flex items-center gap-2 rounded-xl bg-gradient-brand px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-sm transition hover:shadow-glow-gold hover:scale-[1.02]"
+          <div className="grid gap-6 md:grid-cols-2">
+            {[
+              { id: "pump", icon: Cpu, data: advisoryData.pump },
+              { id: "cylinder", icon: Layers, data: advisoryData.cylinder },
+              { id: "hose", icon: Settings, data: advisoryData.hose },
+              { id: "powerpack", icon: Compass, data: advisoryData.powerpack }
+            ].map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.id}
+                  className="reveal-card group flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all hover:border-primary/30 hover:shadow-glow-gold p-8"
+                  data-delay={idx * 100}
                 >
-                  <MessageCircle className="h-4.5 w-4.5" />
-                  {advisoryData[advisorCategory].ctaText}
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </a>
-              </div>
-            </div>
+                  <div>
+                    <div className="flex items-center gap-4 border-b border-border/50 pb-5 mb-6">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <h3 className="font-display text-2xl font-extrabold tracking-wide text-foreground">
+                        {item.data.title}
+                      </h3>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="text-xs font-bold uppercase tracking-widest text-accent mb-2">Common Symptom</h4>
+                        <p className="text-sm font-semibold leading-relaxed text-foreground/90">{item.data.symptom}</p>
+                      </div>
+
+                      <div>
+                        <h4 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Engineering Fix</h4>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{item.data.procedure}</p>
+                      </div>
+
+                      <div>
+                        <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Service Capabilities</h4>
+                        <ul className="grid gap-2 sm:grid-cols-1">
+                          {item.data.features.map((feat, index) => (
+                            <li key={index} className="flex items-center gap-2.5 text-sm leading-relaxed text-foreground/80 font-medium">
+                              <BadgeCheck className="h-4.5 w-4.5 text-[#25D366] shrink-0" />
+                              {feat}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-border/50 pt-6 mt-8 flex items-center justify-between">
+                    <a
+                      href={waLink(item.data.waMessage)}
+                      target="_blank"
+                      rel="noopener"
+                      className="group inline-flex items-center gap-2 rounded-xl bg-gradient-brand px-5 py-3 text-sm font-bold text-primary-foreground shadow-sm transition hover:shadow-glow-gold hover:scale-[1.02]"
+                    >
+                      <WhatsAppIcon className="h-4 w-4" />
+                      {item.data.ctaText}
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -372,126 +365,134 @@ function HomePage() {
       {/* ─── KEY CAPABILITIES (COMPLETELY REDESIGNED PRODUCT GRID) ─── */}
       <section className="border-t border-border py-24 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <div className="reveal-section flex flex-wrap items-end justify-between gap-6 border-b border-border/50 pb-8 mb-12">
-            <div>
+          <div className="reveal-section flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between border-b border-border/50 pb-8 mb-12">
+            <div className="max-w-2xl">
               <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Hydraulic Catalog</div>
-              <h2 className="mt-2 font-display text-4xl font-extrabold tracking-wide md:text-5xl text-foreground">
+              <h2 className="mt-3 font-display text-3xl font-extrabold tracking-wide md:text-5xl text-foreground">
                 Premier Parts & Repair <span className="text-gradient-brand">Capabilities</span>
               </h2>
-              <p className="mt-2 text-muted-foreground max-w-2xl">
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
                 Browse our comprehensive catalog of high-pressure components, custom design builds, and precision calibration services.
               </p>
             </div>
             <Link
               to="/products"
-              className="group inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold text-foreground hover:bg-muted/30 transition shadow-sm"
+              className="group shrink-0 inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-bold text-foreground hover:bg-muted/30 transition shadow-sm"
             >
               Explore Full Catalog
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
-          {/* Catalog Grid */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {CATALOG.slice(0, 8).map((c, i) => (
-              <div
-                key={c.slug}
-                className="reveal-card group flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/20 hover:shadow-glow-gold"
-                data-delay={i * 80}
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src={c.image}
-                    alt={c.title}
-                    width={800}
-                    height={600}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  {/* Subtle Top-Glow overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-80" />
-                </div>
-
-                <div className="p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="font-display text-xl font-extrabold tracking-wide text-foreground group-hover:text-primary transition-colors">
-                      {c.title}
-                    </h3>
-                    <p className="text-xs text-primary font-semibold uppercase mt-0.5 tracking-wider">{c.short}</p>
-                    <p className="mt-3 text-xs leading-relaxed text-muted-foreground line-clamp-3">
-                      {c.description}
-                    </p>
+          {/* Catalog Continuous Scroll Marquee */}
+          <div className="relative overflow-hidden group py-4 -mx-4 px-4 md:-mx-6 md:px-6">
+            {/* Fade edges for smooth entry/exit */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 md:w-32 bg-gradient-to-r from-background to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 md:w-32 bg-gradient-to-l from-background to-transparent" />
+            
+            <div className="flex w-max animate-marquee gap-6 hover:![animation-play-state:paused]">
+              {[...CATALOG, ...CATALOG].map((c, i) => (
+                <div
+                  key={`${c.slug}-${i}`}
+                  className="w-[280px] md:w-[320px] shrink-0 flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/20 hover:shadow-glow-gold"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <img
+                      src={c.image}
+                      alt={c.title}
+                      width={800}
+                      height={600}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    {/* Subtle Top-Glow overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-80" />
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-border/40 flex items-center justify-between">
-                    <a
-                      href={waLink(`Hi RVS Hydraulics, I am interested in your "${c.title}" service / product. Could I get details and pricing?`)}
-                      target="_blank"
-                      rel="noopener"
-                      className="text-xs font-bold text-primary flex items-center gap-1 group-hover:gap-1.5 transition-all"
-                    >
-                      Instant Quote <ArrowRight className="h-3 w-3" />
-                    </a>
-                    <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded font-medium">OEM Kit</span>
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-display text-xl font-extrabold tracking-wide text-foreground group-hover:text-primary transition-colors">
+                        {c.title}
+                      </h3>
+                      <p className="text-xs text-primary font-semibold uppercase mt-0.5 tracking-wider">{c.short}</p>
+                      <p className="mt-3 text-xs leading-relaxed text-muted-foreground line-clamp-3">
+                        {c.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-border/40 flex items-center justify-between">
+                      <a
+                        href={waLink(`Hi RVS Hydraulics, I am interested in your "${c.title}" service / product. Could I get details and pricing?`)}
+                        target="_blank"
+                        rel="noopener"
+                        className="text-xs font-bold text-primary flex items-center gap-1 group-hover:gap-1.5 transition-all"
+                      >
+                        Instant Quote <ArrowRight className="h-3 w-3" />
+                      </a>
+                      <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded font-medium">OEM Kit</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ─── CORPORATE IDENTITY & QUALITY (ABOUT REDESIGN) ─── */}
-      <section className="relative border-t border-border py-24 md:py-28 overflow-hidden bg-steel/20">
+      <section className="relative border-t border-border py-24 md:py-32 overflow-hidden bg-steel/20">
         <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-primary/5 blur-[120px]" />
         <div className="absolute left-0 bottom-0 h-96 w-96 rounded-full bg-accent/5 blur-[120px]" />
 
-        <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 md:grid-cols-12 md:px-6">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 md:grid-cols-12 md:gap-16 md:px-6">
           {/* About Text Area */}
-          <div className="reveal-left md:col-span-7 text-left">
+          <div className="reveal-left md:col-span-7">
             <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Corporate Engineering Partner</div>
-            <h2 className="mt-3 font-display text-4xl font-extrabold md:text-5xl text-foreground leading-tight">
-              Industrial Expertise, <br />
+            <h2 className="mt-4 font-display text-3xl font-extrabold md:text-5xl text-foreground leading-tight">
+              Industrial Expertise, <br className="hidden sm:block" />
               <span className="text-gradient-brand">Uncompromised Reliability</span>
             </h2>
-            <p className="mt-6 leading-relaxed text-muted-foreground md:text-base">
+            <p className="mt-6 text-sm leading-[1.8] text-muted-foreground md:text-base">
               Strategically centered in Shoolagiri, RVS Hydraulics operates as an elite-grade hydraulic supplier and engineering servicing hub. We deliver genuine replacement parts, high-durability seals, and custom AC/DC power packs designed to support the intense requirements of modern heavy factories, CNC machines, agricultural fleets, and transport operations.
+            </p>
+            <p className="mt-3 text-sm leading-[1.8] text-muted-foreground md:text-base">
+              All sales and services — Hydraulic fittings, pumps, cylinders, valves, hoses, and more.
             </p>
 
             {/* Checklist */}
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            <div className="mt-8 grid gap-5 sm:grid-cols-2">
               {[
                 { title: "Genuine OEM Seal Assemblies", desc: "Parker, Hallite & Trelleborg specifications" },
                 { title: "Advanced Workshop Diagnostics", desc: "Rigorous flow-rate pressure calibration" },
                 { title: "On-Site Support Engineers", desc: "Coverage across Hosur, Krishnagiri & Bangalore" },
                 { title: "24-Hour Emergency Response", desc: "Minimizing warehouse & factory downtime" }
               ].map((item, idx) => (
-                <div key={idx} className="flex gap-3">
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <div key={idx} className="flex gap-3 items-start">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary mt-0.5">
                     <BadgeCheck className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-foreground">{item.title}</h4>
-                    <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
+                    <h4 className="text-sm font-bold text-foreground leading-snug">{item.title}</h4>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             {/* Link CTAs */}
-            <div className="mt-9 flex flex-wrap gap-4">
+            <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 to="/about"
                 className="group inline-flex items-center gap-2 rounded-xl bg-gradient-brand px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-industrial transition hover:shadow-glow-gold hover:scale-[1.02]"
               >
-                Read Corporate Story
+                Read Our Story
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3.5 text-sm font-semibold hover:bg-muted/30 transition shadow-sm text-foreground"
               >
-                Get Touch with Engineers
+                Get in Touch
               </Link>
             </div>
           </div>
@@ -518,19 +519,19 @@ function HomePage() {
       </section>
 
       {/* ─── WHY CHOOSE US (HIGH PERFORMANCE METRIC TILES) ─── */}
-      <section className="border-t border-border py-24 md:py-28">
+      <section className="border-t border-border py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="reveal-section mx-auto max-w-2xl text-center mb-16">
             <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Core Value Proposition</div>
-            <h2 className="mt-3 font-display text-4xl font-extrabold text-foreground">
+            <h2 className="mt-3 font-display text-3xl font-extrabold text-foreground md:text-5xl">
               Built for <span className="text-gradient-accent">Industrial Reliability</span>
             </h2>
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
               Factories, heavy workshops, and fleet operators choose RVS Hydraulics because we build absolute structural security and high-fidelity calibration into every job.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-5">
+          <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {[
               {
                 idx: "01",
@@ -582,8 +583,8 @@ function HomePage() {
                     <Icon className="h-5.5 w-5.5" />
                   </div>
                   
-                  <h3 className="mt-5 font-display text-lg font-bold tracking-wide text-foreground">{metric.title}</h3>
-                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{metric.desc}</p>
+                  <h3 className="mt-5 font-display text-base font-bold tracking-wide text-foreground md:text-lg">{metric.title}</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground md:text-sm">{metric.desc}</p>
                 </div>
               );
             })}
@@ -596,12 +597,12 @@ function HomePage() {
         <div className="absolute inset-0 grid-pattern opacity-10" />
         <div className="absolute left-1/2 top-1/2 h-60 w-60 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[80px]" />
 
-        <div className="reveal-section relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-4 md:flex-row md:items-center md:px-6">
-          <div className="text-left">
+        <div className="reveal-section relative mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 px-4 text-center md:flex-row md:items-center md:text-left md:px-6">
+          <div>
             <h3 className="font-display text-3xl font-extrabold tracking-wide md:text-4xl text-foreground">
               Facing a Critical Hydraulic Breakdown <span className="text-gradient-brand">Today?</span>
             </h3>
-            <p className="mt-3 max-w-xl text-muted-foreground">
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
               Consult with our senior service engineer now. Get instant troubleshooting guidance and rapid procurement support.
             </p>
           </div>
@@ -618,7 +619,7 @@ function HomePage() {
               rel="noopener"
               className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3.5 text-sm font-bold text-white shadow-industrial hover:scale-[1.02] transition"
             >
-              <MessageCircle className="h-4 w-4" /> Instant Chat
+              <WhatsAppIcon className="h-4 w-4" /> Instant Chat
             </a>
           </div>
         </div>
@@ -629,10 +630,10 @@ function HomePage() {
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="reveal-section text-center mb-16">
             <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Client Testimonials</div>
-            <h2 className="mt-3 font-display text-4xl font-extrabold text-foreground">
+            <h2 className="mt-3 font-display text-3xl font-extrabold text-foreground md:text-5xl">
               Trusted by <span className="text-gradient-brand">Industrial Leaders</span>
             </h2>
-            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-xl mx-auto md:text-base">
               Read how RVS Hydraulics helps factories maintain high performance and minimize operational bottlenecks.
             </p>
           </div>
@@ -690,15 +691,15 @@ function HomePage() {
         <div className="mx-auto max-w-4xl px-4 md:px-6">
           <div className="reveal-section text-center mb-16">
             <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Technical Knowledge Base</div>
-            <h2 className="mt-3 font-display text-4xl font-extrabold text-foreground">
+            <h2 className="mt-3 font-display text-3xl font-extrabold text-foreground md:text-5xl">
               Frequently Asked <span className="text-gradient-brand">Insights</span>
             </h2>
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-4 max-w-2xl mx-auto text-sm leading-relaxed text-muted-foreground md:text-base">
               Technical answers to common hydraulic pressure maintenance, valve assembly, and product procurement inquiries.
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 text-left">
             {faqs.map((faq, idx) => {
               const isOpen = activeFaq === idx;
               return (
@@ -710,23 +711,23 @@ function HomePage() {
                   <button
                     type="button"
                     onClick={() => setActiveFaq(isOpen ? null : idx)}
-                    className="flex w-full items-center justify-between px-6 py-5 text-left font-display text-base font-bold md:text-lg transition"
+                    className="flex w-full items-center justify-between px-6 py-5 text-left font-display text-base font-bold md:text-lg transition cursor-pointer"
                   >
                     <span className={isOpen ? "text-primary transition-colors font-extrabold tracking-wide" : "text-foreground tracking-wide font-extrabold"}>
                       {faq.q}
                     </span>
                     <ChevronRight
                       className={`h-5 w-5 text-primary shrink-0 transition-transform duration-300 ${
-                        isOpen ? "rotate-90 text-primary" : "text-muted-foreground/80"
+                        isOpen ? "rotate-90" : "text-muted-foreground/80"
                       }`}
                     />
                   </button>
                   <div
                     className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                      isOpen ? "max-h-[200px] border-t border-border/50 opacity-100" : "max-h-0 opacity-0"
+                      isOpen ? "max-h-[300px] border-t border-border/50 opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >
-                    <div className="px-6 py-5 text-sm leading-relaxed text-muted-foreground/90 bg-muted/20 text-left">
+                    <div className="px-6 py-5 text-sm leading-relaxed text-muted-foreground/90 bg-muted/20">
                       {faq.a}
                     </div>
                   </div>
@@ -737,77 +738,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ─── MAP & LOCATION SECTION ─── */}
-      <section className="border-t border-border py-24 md:py-28">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 md:grid-cols-2 md:px-6 items-center">
-          <div className="reveal-left text-left">
-            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Headquarters & Workshop</div>
-            <h2 className="mt-3 font-display text-4xl font-extrabold text-foreground">
-              Visit RVS Hydraulics in <span className="text-gradient-brand">Shoolagiri</span>
-            </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">{SITE.address}</p>
-            
-            <ul className="mt-8 space-y-4">
-              <li className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/5 border border-border">
-                  <MapPin className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-foreground">Prime Location</h4>
-                  <p className="text-xs text-muted-foreground mt-0.5">Conveniently situated Opposite Shoolagiri Bus Stand</p>
-                </div>
-              </li>
-              <li className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/5 border border-border">
-                  <Phone className="h-5 w-5 text-accent" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-foreground">Engage Directly</h4>
-                  <a className="text-xs font-bold text-primary hover:underline" href={`tel:${SITE.phoneIntl}`}>
-                    {SITE.phone}
-                  </a>
-                </div>
-              </li>
-              <li className="flex gap-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/5 border border-border">
-                  <Truck className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-foreground">Regional Courier & Pickup</h4>
-                  <p className="text-xs text-muted-foreground mt-0.5">Serving Shoolagiri, Hosur, Krishnagiri, and Bangalore industrial belts</p>
-                </div>
-              </li>
-            </ul>
 
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${SITE.mapsQuery}`}
-              target="_blank"
-              rel="noopener"
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-gradient-brand px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-industrial transition hover:shadow-glow-gold hover:scale-[1.02]"
-            >
-              Open in Google Maps{" "}
-              <ArrowRight className="h-4 w-4" />
-            </a>
-          </div>
-
-          {/* Map Frame */}
-          <div className="reveal-right overflow-hidden rounded-3xl border border-border/80 shadow-industrial relative">
-            {/* Visual floating address flag */}
-            <div className="absolute top-4 left-4 z-10 bg-card border border-border rounded-xl p-3 shadow-md hidden sm:block text-left">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-primary">RVS Workshop</div>
-              <div className="text-xs font-semibold text-foreground mt-0.5">TK Nagar Service Road</div>
-            </div>
-            
-            <iframe
-              title="RVS Hydraulics location"
-              src={`https://www.google.com/maps?q=${SITE.mapsQuery}&output=embed`}
-              className="h-[380px] w-full md:h-[480px]"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
-        </div>
-      </section>
     </>
   );
 }

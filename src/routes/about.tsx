@@ -39,8 +39,9 @@ function About() {
 
   return (
     <>
-      <section className="pt-32 pb-24 md:pt-36 md:pb-28">
-        <div className="mx-auto grid max-w-7xl gap-14 px-4 md:grid-cols-2 md:px-6">
+      {/* ─── Hero / Story Section ─── */}
+      <section className="pt-32 pb-24 md:pt-40 md:pb-32">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 md:grid-cols-2 md:gap-16 md:px-6">
           <div className="reveal-left relative">
             <div className="absolute -inset-4 rounded-2xl bg-gradient-brand opacity-10 blur-2xl" />
             <img
@@ -56,48 +57,65 @@ function About() {
             <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               Our Story
             </div>
-            <h2 className="mt-3 font-display text-3xl font-bold md:text-5xl">
-              Built on <span className="text-gradient-brand">industrial trust</span>
+            <h2 className="mt-4 font-display text-3xl font-bold leading-tight md:text-5xl">
+              Built on <span className="text-gradient-brand">Industrial Trust</span>
             </h2>
-            <p className="mt-5 leading-relaxed text-muted-foreground">
+            <p className="mt-6 text-sm leading-[1.8] text-muted-foreground md:text-base">
               RVS Hydraulics started with a simple mission — make genuine
               hydraulic parts and quality service accessible to every industry
               around Shoolagiri. Today we work with manufacturing plants,
               workshops, contractors and equipment owners across Tamil Nadu and
               Karnataka.
             </p>
-            <p className="mt-3 leading-relaxed text-muted-foreground">
+            <p className="mt-3 text-sm leading-[1.8] text-muted-foreground md:text-base">
               From a single hose assembly to a full custom power pack, our team
               brings the same engineering discipline and honest pricing to every
-              job.
+              job. All sales and services — Hydraulic fittings, pumps, cylinders,
+              valves, hoses, and more.
             </p>
-            <div className="mt-8 grid grid-cols-3 gap-6 border-t border-border/50 pt-8">
-              <Stat k="8+" v="Product lines" />
-              <Stat k="500+" v="Clients served" />
-              <Stat k="24h" v="Quote turnaround" />
+
+            {/* Stats row */}
+            <div className="mt-10 grid grid-cols-3 gap-6 border-t border-border/50 pt-8">
+              <Stat k="8+" v="Product Lines" />
+              <Stat k="500+" v="Clients Served" />
+              <Stat k="24h" v="Quote Turnaround" />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-border py-24 md:py-28">
+      {/* ─── Mission / Promise / Team ─── */}
+      <section className="border-t border-border py-24 md:py-32 bg-steel/20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="reveal-section mx-auto max-w-2xl text-center mb-14">
+            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+              What Drives Us
+            </div>
+            <h2 className="mt-3 font-display text-3xl font-bold md:text-5xl">
+              Mission, Promise &{" "}
+              <span className="text-gradient-brand">People</span>
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
+              The pillars that define how we operate and serve the industrial community.
+            </p>
+          </div>
+
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
                 i: Target,
                 t: "Our Mission",
-                d: "Deliver dependable hydraulic parts and service that keep industrial operations running.",
+                d: "Deliver dependable hydraulic parts and service that keep industrial operations running without interruption.",
               },
               {
                 i: BadgeCheck,
                 t: "Our Promise",
-                d: "Genuine products, transparent pricing and warranted workmanship — every time.",
+                d: "Genuine products, transparent pricing, and warranted workmanship — every time, on every order.",
               },
               {
                 i: Users,
                 t: "Our Team",
-                d: "Trained engineers and technicians with deep industrial hydraulic experience.",
+                d: "Trained engineers and technicians with deep industrial hydraulic experience across all major brands.",
               },
             ].map(({ i: Icon, t, d }, idx) => (
               <div
@@ -111,7 +129,7 @@ function About() {
                 <h3 className="mt-5 font-display text-xl font-semibold">
                   {t}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {d}
                 </p>
               </div>
@@ -120,26 +138,27 @@ function About() {
         </div>
       </section>
 
-      <section className="border-t border-border py-24 md:py-28 relative overflow-hidden">
+      {/* ─── Expertise / CTA Section ─── */}
+      <section className="border-t border-border py-24 md:py-32 relative overflow-hidden">
         <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-accent/5 blur-[100px]" />
-        <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 md:grid-cols-2 md:px-6">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 md:grid-cols-2 md:gap-16 md:px-6">
           <div className="reveal-left">
             <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 border border-accent/30 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent">
               <Wrench className="h-3.5 w-3.5" /> Expertise
             </div>
-            <h2 className="mt-4 font-display text-3xl font-bold md:text-5xl">
+            <h2 className="mt-5 font-display text-3xl font-bold md:text-5xl">
               From sourcing to servicing —{" "}
               <span className="text-gradient-accent">we cover it all</span>
             </h2>
-            <p className="mt-5 leading-relaxed text-muted-foreground">
+            <p className="mt-6 text-sm leading-[1.8] text-muted-foreground md:text-base">
               Our technicians work on hydraulic pumps, cylinders, valves, power
               packs, hoses and accessories from leading global and Indian brands.
             </p>
             <Link
               to="/contact"
-              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-brand px-6 py-3 text-sm font-bold text-primary-foreground shadow-industrial transition-all hover:shadow-glow-gold"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-gradient-brand px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-industrial transition-all hover:shadow-glow-gold hover:scale-[1.02]"
             >
-              Talk to our team{" "}
+              Talk to Our Team{" "}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -162,9 +181,9 @@ function About() {
 
 function Stat({ k, v }: { k: string; v: string }) {
   return (
-    <div>
-      <div className="font-display text-4xl font-extrabold text-primary">{k}</div>
-      <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
+    <div className="text-center sm:text-left">
+      <div className="font-display text-3xl font-extrabold text-primary md:text-4xl">{k}</div>
+      <div className="mt-1 text-xs uppercase tracking-wider text-muted-foreground font-semibold">
         {v}
       </div>
     </div>
