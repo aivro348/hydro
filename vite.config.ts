@@ -11,16 +11,7 @@ export default defineConfig(async (env) => {
   internalPlugins.push(tailwindcss());
   internalPlugins.push(tsConfigPaths({ projects: ["./tsconfig.json"] }));
 
-  if (command === "build") {
-    try {
-      const { cloudflare } = await import("@cloudflare/vite-plugin");
-      internalPlugins.push(cloudflare({
-        viteEnvironment: { name: "ssr" }
-      }));
-    } catch {
-      // cloudflare plugin is optional
-    }
-  }
+
 
   const tanstackStartDefaults = {
     importProtection: {
@@ -30,7 +21,10 @@ export default defineConfig(async (env) => {
         specifiers: ["server-only"]
       }
     },
-    server: { entry: "server" }
+    server: { 
+      entry: "server",
+      preset: "vercel"
+    }
   };
   
   internalPlugins.push(tanstackStart(tanstackStartDefaults));
